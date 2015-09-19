@@ -1,73 +1,85 @@
-                var xcon1=0, ycon1=0, xcon2=200, yon2=150, xend=400, yend=300;
-                var a=40, k, interv = null, currentMousePos = { x: -1, y: -1 }, flag=0;
+                var startX=0, startY=0, finalEndX=500, finalEndY=200, currentEndX = 0, currentEndY = 0;
+                var controlX=(currentEndX - startX)/2, controlY=(currentEndY - startY)/2;
+                var isGrown = false;
+                var a=20, k, interv = null, currentMousePos = { x: -1, y: -1 }, flag=0;
                 var c=document.getElementById("string");
                 var ctx=c.getContext("2d");
                 ctx.beginPath();
-                ctx.moveTo(xcon1,ycon1);
-                ctx.bezierCurveTo(xcon1, ycon1, xcon2, yon2, xend, yend);   
+                ctx.moveTo(startX,startY);
+                ctx.bezierCurveTo(startX, startY, controlX, controlY, currentEndX, currentEndY);
                 ctx.stroke();
-
-                
 
                 $(document).ready(function(){
 
                       $(document).mousemove(function(event) {
-                      currentMousePos.x = event.pageX;
-                      currentMousePos.y = event.pageY;
+                          currentMousePos.x = event.pageX;
+                          currentMousePos.y = event.pageY;
 
-                      if(currentMousePos.x > xcon1 && currentMousePos.x < xend && currentMousePos.y > ycon1 && currentMousePos.y < yend ){
-                        if(((currentMousePos.x-xcon1)/(currentMousePos.y-ycon1) >= (xend-xcon1)/(yend-ycon1)) && (flag ==1)){
-                           a=40;
-                          interv = setInterval(pluck, 50);
-                          flag = 0;
-                        }
-                        else if(((currentMousePos.x - xcon1)/(currentMousePos.y - ycon1) <= (xend-xcon1)/(yend-ycon1)) && (flag ==0)){
-                          a=40;
-                          interv = setInterval(pluck, 50);
-                          flag = 1;
-                        }
-                        else unpluck;
-                      }
-                       });
+                          if(currentMousePos.x > startX && currentMousePos.x < currentEndX && currentMousePos.y > startY && currentMousePos.y < currentEndY ){
+                                if(((currentMousePos.x-startX)/(currentMousePos.y-startY) >= (currentEndX-startX)/(currentEndY-startY)) && (flag ==1)){
+                                   a=20;
+                                  interv = setInterval(pluck, 20);
+                                  flag = 0;
+                                }
+                                else if(((currentMousePos.x - startX)/(currentMousePos.y - startY) <= (currentEndX-startX)/(currentEndY-startY)) && (flag ==0)){
+                                  a=20;
+                                  interv = setInterval(pluck, 20);
+                                  flag = 1;
+                                }
+                                else unpluck;
+                          }
+                      });
 
                $('#grow').on('click', function(){
-                  growthinterval = setInterval(grow, 20);
+                  growthinterval = setInterval(grow, 10);
 
                       });
                   });
 
                   function pluck() {
-                        var ycon2=(yend - ycon1)/2;
-                        if(a>0) a-=1; 
+                        var controlY = (currentEndY - startY)/2;
+                        if(a>0) a-=0.2;
                         else if(a==0){ 
                           unpluck; 
-                         // a=40;
-                        } else a+=1;
+                        } else a+=0.2;
                         a=a*(-1) ;
-                        ycon2+=a;
+                        controlY+=a;
                         c.width = c.width;
-                        ctx.moveTo(xcon1, ycon1);
-                        ctx.bezierCurveTo(xcon1, ycon1, xcon2, ycon2, xend, yend);
+                        ctx.moveTo(startX, startY);
+                        ctx.bezierCurveTo(startX, startY, controlX, controlY, currentEndX, currentEndY);
                         ctx.strokeStyle = '#000000';
                         ctx.stroke();
                       }
 
                 function unpluck() {
                  if(a==0){
-                 
-                    clearInterval(interv);}
-                    a=40;
+                    clearInterval(interv);
+                 }
+                    a=20;
                 }
               
                 function grow(){
-                      if(yend<=700) yend += 5;
-                      else stopgrowth;
-                      c.width = c.width;
-                      ctx.moveTo(xcon1, ycon1);
-                      ycon2 = yend/2;
-                      ctx.bezierCurveTo(xcon1, ycon1, xcon2, ycon2, xend, yend);
-                      ctx.strokeStyle = '#000000';
-                      ctx.stroke();
+                    if (isGrown == true) {
+                        
+                    } else {
+                        if (currentEndX < finalEndX) {
+                            currentEndX += 5;
+                            currentEndY = currentEndX * (finalEndY/finalEndX);
+                            
+                            controlX = (currentEndX - startX)/2;
+                            controlY = (currentEndY - startY)/2;
+                        }
+                        else {
+                            stopgrowth;
+                            isGrown = true;
+                        }
+                        
+                        c.width = c.width;
+                        ctx.moveTo(startX, startY);
+                        ctx.bezierCurveTo(startX, startY, controlX, controlY, currentEndX, currentEndY);
+                        ctx.strokeStyle = '#000000';
+                        ctx.stroke();
+                    }
                 }
 
                 function stopgrowth(){
