@@ -12,56 +12,56 @@ var c=document.getElementById("string");
 var ctx=c.getContext("2d");
 
 $(document).ready(function(){
-    if (xEnd == xStart) {
-        //Vertical Line
-        
-    } else if (yEnd == ystart) {
-        //Horizontal Line
-        
-    } else {
-        //All other lines
-        slope = (yEnd - ystart)/(xEnd - xStart);
-    }
-
-    $(document).mousemove(function(event) {
-        if (currentMousePos.x == -1 && currentMousePos.y == -1) {
-            currentMousePos.x = event.pageX;
-            currentMousePos.y = event.pageY;
-        }
-
-        if (isGrown == true) {
-            if (xEnd == xStart) {
-                //Vertical Line
-                if ((event.pageX >= xStart && currentMousePos.x < xStart) || (event.pageX <= xStart && currentMousePos.x > xStart)) {
-                    clearInterval(pluckInterval);
-                    pluckAmplitude = 20;
-                    pluckInterval = setInterval(pluck, 10);
-                }
-            } else if (yEnd == ystart) {
-                //Horizontal Line
-                if ((event.pageY >= ystart && currentMousePos.y < ystart) || (event.pageY <= ystart && currentMousePos.y > ystart)) {
-                    clearInterval(pluckInterval);
-                    pluckAmplitude = 20;
-                    pluckInterval = setInterval(pluck, 10);
-                }
-            } else {
-                //All other lines
-                if (line_intersects(xStart, ystart, xEnd, yEnd, event.pageX, event.pageY, currentMousePos.x, currentMousePos.y) == true) {
-                    clearInterval(pluckInterval);
-                    pluckAmplitude = 20;
-                    pluckInterval = setInterval(pluck, 10);
-                }
-            }
-            currentMousePos.x = event.pageX;
-            currentMousePos.y = event.pageY;
-        }
-    });
-
-    $('#grow').on('click', function(){
-        growthinterval = setInterval(grow, 10);
-    });
-
-});
+                  if (xEnd == xStart) {
+                  //Vertical Line
+                  
+                  } else if (yEnd == ystart) {
+                  //Horizontal Line
+                  
+                  } else {
+                  //All other lines
+                  slope = (yEnd - ystart)/(xEnd - xStart);
+                  }
+                  
+                  $(document).mousemove(function(event) {
+                                        if (currentMousePos.x == -1 && currentMousePos.y == -1) {
+                                        currentMousePos.x = event.pageX;
+                                        currentMousePos.y = event.pageY;
+                                        }
+                                        
+                                        if (isGrown == true) {
+                                        if (xEnd == xStart) {
+                                        //Vertical Line
+                                        if ((event.pageX >= xStart && currentMousePos.x < xStart) || (event.pageX <= xStart && currentMousePos.x > xStart)) {
+                                        clearInterval(pluckInterval);
+                                        pluckAmplitude = 20;
+                                        pluckInterval = setInterval(pluck, 10);
+                                        }
+                                        } else if (yEnd == ystart) {
+                                        //Horizontal Line
+                                        if ((event.pageY >= ystart && currentMousePos.y < ystart) || (event.pageY <= ystart && currentMousePos.y > ystart)) {
+                                        clearInterval(pluckInterval);
+                                        pluckAmplitude = 20;
+                                        pluckInterval = setInterval(pluck, 10);
+                                        }
+                                        } else {
+                                        //All other lines
+                                        if (line_intersects(xStart, ystart, xEnd, yEnd, event.pageX, event.pageY, currentMousePos.x, currentMousePos.y) == true) {
+                                        clearInterval(pluckInterval);
+                                        pluckAmplitude = 20;
+                                        pluckInterval = setInterval(pluck, 10);
+                                        }
+                                        }
+                                        currentMousePos.x = event.pageX;
+                                        currentMousePos.y = event.pageY;
+                                        }
+                                        });
+                  
+                  $('#grow').on('click', function(){
+                                growthinterval = setInterval(grow, 10);
+                                });
+                  
+                  });
 
 function line_intersects(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y) {
     
@@ -88,7 +88,7 @@ function pluck() {
     c.width = c.width;
     ctx.beginPath();
     ctx.moveTo(xStart, ystart);
-
+    
     if (xEnd == xStart) {
         //Vertical Line
         ctx.bezierCurveTo(xStart, ystart, xStart + pluckAmplitude, (ystart + yEnd)/2, xEnd, yEnd);
@@ -110,7 +110,7 @@ function pluck() {
         pluckAmplitude = 20;
     }
     pluckAmplitude = pluckAmplitude*-1;
-
+    
     ctx.strokeStyle = '#000000';
     ctx.stroke();
 }
